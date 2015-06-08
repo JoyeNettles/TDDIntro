@@ -109,17 +109,32 @@ public class LibraryTest {
         DateTime time = new DateTime();
         DateTimeFormatter dateTimeFormatter = mock(DateTimeFormatter.class);
 
-        when(dateTimeFormatter.print(time)).thenReturn("1:35 pm June 8, 2015");
+        when(dateTimeFormatter.print(time)).thenReturn("2013-04-08 16:33:17");
 
         Library library = new Library(books, printStream, dateTimeFormatter);
 
         library.welcome(time);
 
-        verify(printStream).println("Welcome to the library! The current time is 1:35 pm June 8, 2015"); // Was I supposed to hardcode the welcome() portion
+        verify(printStream).println("Welcome to the library! The current time is 2013-04-08 16:33:17"); // Was I supposed to hardcode the welcome() portion
     }
 
     @Test
+    /*
+    Assuming this test is to display time without the welcome text? What is the empty string its referencing
+     */
     public void shouldDisplayFormattedTimeWhenItIsAnEmptyString() {
+        List<String> books = new ArrayList<>();
+        PrintStream printStream = mock(PrintStream.class);
+        DateTime time = null;
+        DateTimeFormatter dateTimeFormatter = mock(DateTimeFormatter.class);
+
+        when(dateTimeFormatter.print(time)).thenReturn("2013-04-08 16:33:17");
+
+        Library library = new Library(books, printStream, dateTimeFormatter);
+
+        library.welcome(time);
+
+        verify(printStream).println(contains("2013-04-08 16:33:17")); // Was I supposed to hardcode the welcome() portion
 
     }
 }

@@ -109,18 +109,17 @@ public class LibraryTest {
         DateTime time = new DateTime();
         DateTimeFormatter dateTimeFormatter = mock(DateTimeFormatter.class);
 
-        when(dateTimeFormatter.print(time)).thenReturn("FormattedTimeString");
+        when(dateTimeFormatter.print(time)).thenReturn("1:35 pm June 8, 2015");
 
         Library library = new Library(books, printStream, dateTimeFormatter);
 
         library.welcome(time);
 
-        // add a verify here
+        verify(printStream).println("Welcome to the library! The current time is 1:35 pm June 8, 2015"); // Was I supposed to hardcode the welcome() portion
     }
 
     @Test
     public void shouldDisplayFormattedTimeWhenItIsAnEmptyString() {
 
-        // implement me
     }
 }

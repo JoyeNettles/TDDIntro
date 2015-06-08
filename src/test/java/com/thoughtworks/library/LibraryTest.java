@@ -16,16 +16,14 @@ public class LibraryTest {
     List<String> books;
     PrintStream printStream;
     Library library ;
+    DateTimeFormatter dateTimeFormatter;
 
     @Before
-    /*
-    Confused on implementation here. Should setUp() just be for instantiating needed variables? If so, what happens when you want to use
-    a different type of that object (as it persists through different method tests...or does it?)
-     */
     public void setUp(){
-        List<String> books = new ArrayList<>();
-        PrintStream printStream = mock(PrintStream.class);
-        Library library = new Library(books, printStream, null);
+        books = new ArrayList<>();
+        printStream = mock(PrintStream.class);
+        dateTimeFormatter = mock(DateTimeFormatter.class);
+        library = new Library(books, printStream, dateTimeFormatter);
     }
 
     /*
@@ -33,44 +31,29 @@ public class LibraryTest {
         List books tests. Implement the first three tests for the Verify exercise
 
      */
-
-
     @Test
     public void shouldPrintBookTitleWhenThereIsOneBook() {
 
-        List<String> books = new ArrayList<>();
         String title = "Book Title";
         books.add(title);
-        PrintStream printStream = mock(PrintStream.class);
-        Library library = new Library(books, printStream, null);
 
         library.listBooks();
 
         verify(printStream).println(title);
-        // add a verify statement here that shows that the book title was printed by to the printStream
     }
 
     @Test
     public void shouldPrintNothingWhenThereAreNoBooks() {
-        List<String> books = new ArrayList<>();
-        PrintStream printStream = mock(PrintStream.class);
-        Library library = new Library(books, printStream, null);
-
         library.listBooks();
-
         verifyZeroInteractions(printStream);
     }
 
     @Test
     public void shouldPrintBothBookTitlesWhenThereAreTwoBooks() {
-        List<String> books = new ArrayList<>();
         String title = "Book Title 1";
         String title2 = "Harry Potter 2";
         books.add(title);
         books.add(title2);
-
-        PrintStream printStream = mock(PrintStream.class);
-        Library library = new Library(books, printStream, null);
 
         library.listBooks();
 
@@ -88,15 +71,10 @@ public class LibraryTest {
     // This one is done for you
     @Test
     public void shouldWelcomeUser() {
-        List<String> books = new ArrayList<>();
-        PrintStream printStream = mock(PrintStream.class);
-        DateTimeFormatter dateTimeFormatter = mock(DateTimeFormatter.class);
-        Library library = new Library(books, printStream, dateTimeFormatter);
-
         // We don't need to mock DateTime because it is a value object
         // We can't mock it because it is a final class
         DateTime time = new DateTime();
-        
+
         library.welcome(time);
         
         verify(printStream).println(contains("Welcome"));
@@ -104,14 +82,9 @@ public class LibraryTest {
     
     @Test
     public void shouldDisplayFormattedTime() {
-        List<String> books = new ArrayList<>();
-        PrintStream printStream = mock(PrintStream.class);
         DateTime time = new DateTime();
-        DateTimeFormatter dateTimeFormatter = mock(DateTimeFormatter.class);
 
         when(dateTimeFormatter.print(time)).thenReturn("2013-04-08 16:33:17");
-
-        Library library = new Library(books, printStream, dateTimeFormatter);
 
         library.welcome(time);
 
@@ -120,17 +93,12 @@ public class LibraryTest {
 
     @Test
     /*
-    Assuming this test is to display time without the welcome text? What is the empty string its referencing
+    Assuming this test is to display welcome when nothing is passed into the welcome method
      */
     public void shouldDisplayFormattedTimeWhenItIsAnEmptyString() {
-        List<String> books = new ArrayList<>();
-        PrintStream printStream = mock(PrintStream.class);
         DateTime time = null;
-        DateTimeFormatter dateTimeFormatter = mock(DateTimeFormatter.class);
 
         when(dateTimeFormatter.print(time)).thenReturn("2013-04-08 16:33:17");
-
-        Library library = new Library(books, printStream, dateTimeFormatter);
 
         library.welcome(time);
 

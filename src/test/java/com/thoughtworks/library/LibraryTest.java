@@ -2,6 +2,7 @@ package com.thoughtworks.library;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.PrintStream;
@@ -9,12 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.contains;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class LibraryTest {
+    List<String> books;
+    PrintStream printStream;
+    Library library ;
 
+    @Before
+    /*
+    Confused on implementation here. Should setUp() just be for instantiating needed variables? If so, what happens when you want to use
+    a different type of that object (as it persists through different method tests...or does it?)
+     */
+    public void setUp(){
+        List<String> books = new ArrayList<>();
+        PrintStream printStream = mock(PrintStream.class);
+        Library library = new Library(books, printStream, null);
+    }
 
     /*
 
@@ -34,19 +46,36 @@ public class LibraryTest {
 
         library.listBooks();
 
+        verify(printStream).println(title);
         // add a verify statement here that shows that the book title was printed by to the printStream
     }
 
     @Test
     public void shouldPrintNothingWhenThereAreNoBooks() {
+        List<String> books = new ArrayList<>();
+        PrintStream printStream = mock(PrintStream.class);
+        Library library = new Library(books, printStream, null);
 
-        // implement me
+        library.listBooks();
+
+        verifyZeroInteractions(printStream);
     }
 
     @Test
     public void shouldPrintBothBookTitlesWhenThereAreTwoBooks() {
+        List<String> books = new ArrayList<>();
+        String title = "Book Title 1";
+        String title2 = "Harry Potter 2";
+        books.add(title);
+        books.add(title2);
 
-        // implement me
+        PrintStream printStream = mock(PrintStream.class);
+        Library library = new Library(books, printStream, null);
+
+        library.listBooks();
+
+        verify(printStream).println(title);
+        verify(printStream).println(title2);
     }
 
     /*
